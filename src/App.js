@@ -97,13 +97,16 @@ class App extends React.Component {
 
   calculateOperations = () => {
     let result = this.state.operations.join("");
+    const dec = /[.]/;
     if (result) {
       result = math.eval(result);
       result = math.format(result, { precision: 10 });
       result = String(result);
+      let value = dec.test(result)? true : false;
       this.setState({
         operations: [result],
-        output: [result]
+        output: [result],
+        decimal: value 
       });
     }
   };
@@ -111,6 +114,7 @@ class App extends React.Component {
   handleClick = e => {
     const value = e.target.getAttribute("value");
     const oper = /[/+*-]/;
+    
     switch (value) {
       case "clear":
         this.setState({
@@ -124,6 +128,7 @@ class App extends React.Component {
         this.calculateOperations();
         break;
       case ".":
+      
         if (
           this.state.operations.slice(-1) !== "." &&
           this.state.decimal === false
